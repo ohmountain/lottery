@@ -63,7 +63,7 @@ class Meet
      * @param MeetEntity $meet
      * @return array
      */
-    public function getParticipants(MeetEntity $meet)
+    public function getParticipantsAsArray(MeetEntity $meet)
     {
         $participants = $meet->getParticipants();
 
@@ -90,7 +90,7 @@ class Meet
      */
     public function getParticipantsOpenIds(MeetEntity $meet)
     {
-        $participants = $this->getParticipants($meet);
+        $participants = $this->getParticipantsAsArray($meet);
 
         $open_ids = [];
 
