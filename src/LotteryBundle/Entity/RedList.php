@@ -5,12 +5,12 @@ namespace LotteryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Result
+ * RedList
  *
- * @ORM\Table(name="result")
- * @ORM\Entity(repositoryClass="LotteryBundle\Repository\ResultRepository")
+ * @ORM\Table(name="red_list")
+ * @ORM\Entity(repositoryClass="LotteryBundle\Repository\RedListRepository")
  */
-class Result
+class RedList
 {
     /**
      * @var int
@@ -22,31 +22,25 @@ class Result
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="round", type="integer", options={"comment":"获奖轮数"})
-     */
-    private $round;
-
-    /**
      * @var Meet
-     * @ORM\ManyToOne(targetEntity="Meet", inversedBy="results")
+     *
+     * @ORM\ManyToOne(targetEntity="Meet", inversedBy="redlists")
      */
     private $meet;
 
     /**
      * @var Prize
-     * 
-     * @ORM\ManyToOne(targetEntity="Prize", inversedBy="results")
+     *
+     * @ORM\OneToOne(targetEntity="Prize", inversedBy="redlists")
      */
     private $prize;
 
     /**
-     * @var Participant
+     * @var array
      *
-     * @ORM\OneToOne(targetEntity="Participant", inversedBy="result")
+     * @ORM\OneToMany(targetEntity="Participant", mappedBy="redlist")
      */
-    private $participant;
+    private $participants;
 
     /**
      * Get id
@@ -57,29 +51,12 @@ class Result
     {
         return $this->id;
     }
-
     /**
-     * Set round
-     *
-     * @param integer $round
-     *
-     * @return Result
+     * Constructor
      */
-    public function setRound($round)
+    public function __construct()
     {
-        $this->round = $round;
-
-        return $this;
-    }
-
-    /**
-     * Get round
-     *
-     * @return int
-     */
-    public function getRound()
-    {
-        return $this->round;
+        $this->participants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -87,7 +64,7 @@ class Result
      *
      * @param \LotteryBundle\Entity\Meet $meet
      *
-     * @return Result
+     * @return RedList
      */
     public function setMeet(\LotteryBundle\Entity\Meet $meet = null)
     {
@@ -111,7 +88,7 @@ class Result
      *
      * @param \LotteryBundle\Entity\Prize $prize
      *
-     * @return Result
+     * @return RedList
      */
     public function setPrize(\LotteryBundle\Entity\Prize $prize = null)
     {
@@ -131,26 +108,36 @@ class Result
     }
 
     /**
-     * Set participant
+     * Add participant
      *
      * @param \LotteryBundle\Entity\Participant $participant
      *
-     * @return Result
+     * @return RedList
      */
-    public function setParticipant(\LotteryBundle\Entity\Participant $participant = null)
+    public function addParticipant(\LotteryBundle\Entity\Participant $participant)
     {
-        $this->participant = $participant;
+        $this->participants[] = $participant;
 
         return $this;
     }
 
     /**
-     * Get participant
+     * Remove participant
      *
-     * @return \LotteryBundle\Entity\Participant
+     * @param \LotteryBundle\Entity\Participant $participant
      */
-    public function getParticipant()
+    public function removeParticipant(\LotteryBundle\Entity\Participant $participant)
     {
-        return $this->participant;
+        $this->participants->removeElement($participant);
+    }
+
+    /**
+     * Get participants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
     }
 }

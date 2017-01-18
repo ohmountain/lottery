@@ -24,51 +24,103 @@ class Prize
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, options={"comment":"奖项名称"})
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, options={"comment":"奖项图片"})
      */
     private $image;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="count", type="integer")
+     * @ORM\Column(name="count", type="integer", options={"comment":"奖品数量"})
      */
     private $count;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="round", type="integer")
+     * @ORM\Column(name="one_time_count", type="integer", options={"comment":"一次抽取的人数"})
      */
-    private $round;
+    private $one_time_count;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="round", type="integer", options={"comment":"当前第几轮"})
+     */
+    private $round = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, options={"comment":"奖品名称"})
      */
     private $name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="status", type="smallint", length=1, options={"comment":"奖项状态：-1为已完成，0为停止，1为正在进行"})
+     */
+    private $status;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="deleted", type="boolean", options={"comment":"是否已经删除"})
+     */
+    private $deleted = false;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime", options={"comment":"创建时间"})
      */
     private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime", options={"comment":"更新时间"})
      */
     private $updatedAt;
+
+    /**
+     * @var Meet
+     *
+     * @ORM\ManyToOne(targetEntity="Meet", inversedBy="prizes")
+     */
+    private $meet;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="prize")
+     */
+    private $results;
+
+    /**
+     * @var array
+     * 奖项红名单
+     *
+     * @ORM\OneToOne(targetEntity="RedList", mappedBy="prize")
+     */
+    private $redlists;
+
+    /**
+     * @var array
+     * 奖项黑名单
+     *
+     * @ORM\OneToOne(targetEntity="BlackList", mappedBy="prize")
+     */
+    private $blacklists;
+
 
 
     /**
@@ -248,5 +300,189 @@ class Prize
     {
         return $this->updatedAt;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->results = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Set oneTimeCount
+     *
+     * @param integer $oneTimeCount
+     *
+     * @return Prize
+     */
+    public function setOneTimeCount($oneTimeCount)
+    {
+        $this->one_time_count = $oneTimeCount;
+
+        return $this;
+    }
+
+    /**
+     * Get oneTimeCount
+     *
+     * @return integer
+     */
+    public function getOneTimeCount()
+    {
+        return $this->one_time_count;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return Prize
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     *
+     * @return Prize
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set meet
+     *
+     * @param \LotteryBundle\Entity\Meet $meet
+     *
+     * @return Prize
+     */
+    public function setMeet(\LotteryBundle\Entity\Meet $meet = null)
+    {
+        $this->meet = $meet;
+
+        return $this;
+    }
+
+    /**
+     * Get meet
+     *
+     * @return \LotteryBundle\Entity\Meet
+     */
+    public function getMeet()
+    {
+        return $this->meet;
+    }
+
+    /**
+     * Add result
+     *
+     * @param \LotteryBundle\Entity\Result $result
+     *
+     * @return Prize
+     */
+    public function addResult(\LotteryBundle\Entity\Result $result)
+    {
+        $this->results[] = $result;
+
+        return $this;
+    }
+
+    /**
+     * Remove result
+     *
+     * @param \LotteryBundle\Entity\Result $result
+     */
+    public function removeResult(\LotteryBundle\Entity\Result $result)
+    {
+        $this->results->removeElement($result);
+    }
+
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    /**
+     * Set redlists
+     *
+     * @param \LotteryBundle\Entity\RedList $redlists
+     *
+     * @return Prize
+     */
+    public function setRedlists(\LotteryBundle\Entity\RedList $redlists = null)
+    {
+        $this->redlists = $redlists;
+
+        return $this;
+    }
+
+    /**
+     * Get redlists
+     *
+     * @return \LotteryBundle\Entity\RedList
+     */
+    public function getRedlists()
+    {
+        return $this->redlists;
+    }
+
+    /**
+     * Set blacklists
+     *
+     * @param \LotteryBundle\Entity\BlackList $blacklists
+     *
+     * @return Prize
+     */
+    public function setBlacklists(\LotteryBundle\Entity\BlackList $blacklists = null)
+    {
+        $this->blacklists = $blacklists;
+
+        return $this;
+    }
+
+    /**
+     * Get blacklists
+     *
+     * @return \LotteryBundle\Entity\BlackList
+     */
+    public function getBlacklists()
+    {
+        return $this->blacklists;
+    }
+}

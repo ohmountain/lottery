@@ -24,24 +24,51 @@ class Participant
     /**
      * @var string
      *
-     * @ORM\Column(name="open_id", type="string", length=255, unique=true)
+     * @ORM\Column(name="open_id", type="string", length=255, options={"comment":"签到用户的open_id"})
      */
     private $openId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="autograph", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, options={"comment":"签到的用户名"})
      */
-    private $autograph;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, options={"comment":"用户头像url"})
      */
     private $image;
 
+    /**
+     * @var Meet
+     *
+     * @ORM\ManyToOne(targetEntity="Meet", inversedBy="participants")
+     */
+    private $meet;
+
+    /**
+     * @var Result
+     *
+     * @ORM\OneToOne(targetEntity="Result", mappedBy="participant")
+     */
+    private $result;
+
+    /**
+     * @var RedList
+     *
+     * @ORM\ManyToOne(targetEntity="RedList", inversedBy="participants")
+     */
+    private $redlist;
+
+    /**
+     * @var BlackList
+     *
+     * @ORM\ManyToOne(targetEntity="BlackList", inversedBy="participants")
+     */
+    private $blacklist;
 
     /**
      * Get id
@@ -78,27 +105,27 @@ class Participant
     }
 
     /**
-     * Set autograph
+     * Set name
      *
-     * @param string $autograph
+     * @param string $name
      *
      * @return Participant
      */
-    public function setAutograph($autograph)
+    public function setName($name)
     {
-        $this->autograph = $autograph;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get autograph
+     * Get name
      *
      * @return string
      */
-    public function getAutograph()
+    public function getName()
     {
-        return $this->autograph;
+        return $this->name;
     }
 
     /**
@@ -124,5 +151,104 @@ class Participant
     {
         return $this->image;
     }
-}
 
+    /**
+     * Set meet
+     *
+     * @param \LotteryBundle\Entity\Participant $meet
+     *
+     * @return Participant
+     */
+    public function setMeet(\LotteryBundle\Entity\Participant $meet = null)
+    {
+        $this->meet = $meet;
+
+        return $this;
+    }
+
+    /**
+     * Get meet
+     *
+     * @return \LotteryBundle\Entity\Participant
+     */
+    public function getMeet()
+    {
+        return $this->meet;
+    }
+
+    /**
+     * Set result
+     *
+     * @param \LotteryBundle\Entity\Result $result
+     *
+     * @return Participant
+     */
+    public function setResult(\LotteryBundle\Entity\Result $result = null)
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * Get result
+     *
+     * @return \LotteryBundle\Entity\Result
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Set redlist
+     *
+     * @param \LotteryBundle\Entity\RedList $redlist
+     *
+     * @return Participant
+     */
+    public function setRedlist(\LotteryBundle\Entity\RedList $redlist = null)
+    {
+        if (!$this->getBlacklist()) {
+            $this->redlist = $redlist;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get redlist
+     *
+     * @return \LotteryBundle\Entity\RedList
+     */
+    public function getRedlist()
+    {
+        return $this->redlist;
+    }
+
+    /**
+     * Set blacklist
+     *
+     * @param \LotteryBundle\Entity\BlackList $blacklist
+     *
+     * @return Participant
+     */
+    public function setBlacklist(\LotteryBundle\Entity\BlackList $blacklist = null)
+    {
+        if (!$this->getRedlist()) {
+            $this->blacklist = $blacklist;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get blacklist
+     *
+     * @return \LotteryBundle\Entity\BlackList
+     */
+    public function getBlacklist()
+    {
+        return $this->blacklist;
+    }
+}
