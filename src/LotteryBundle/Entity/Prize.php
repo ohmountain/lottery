@@ -47,7 +47,7 @@ class Prize
      *
      * @ORM\Column(name="one_time_count", type="integer", options={"comment":"一次抽取的人数"})
      */
-    private $one_time_count;
+    private $one_time_count = 1;
 
     /**
      * @var int
@@ -68,7 +68,7 @@ class Prize
      *
      * @ORM\Column(name="status", type="smallint", length=1, options={"comment":"奖项状态：-1为已完成，0为停止，1为正在进行"})
      */
-    private $status;
+    private $status = 0;
 
     /**
      * @var bool
