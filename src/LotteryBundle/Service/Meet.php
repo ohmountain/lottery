@@ -20,6 +20,22 @@ class Meet
     }
 
     /**
+     * @param $meet_id
+     * @return MeetEntity $meet
+     */
+    public function createMeet($meet_id)
+    {
+        $meet = new MeetEntity;
+        $meet->setOuterId($meet_id);
+
+        $em = $this->container->get('doctrine')->getManager();
+        $em->persist($meet);
+        $em->flush();
+
+        return $meet;
+    }
+
+    /**
      * @param MeetEntity $meet
      * @param array $participants
      * @return int
@@ -28,7 +44,7 @@ class Meet
     {
         $existed_open_ids = $this->getParticipantsOpenIds($meet);
 
-        $em = $this->container->getDoctrine()->getMananger();
+        $em = $this->container->get('doctrine')->getMananger();
 
         $inserted_count = 0;
 

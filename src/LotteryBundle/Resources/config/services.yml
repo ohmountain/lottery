@@ -4,6 +4,6 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
 #
 
-    lottery.meet:
+    lottery.design.meet:
         class:  LotteryBundle\Service\Meet
-        arguments: ["service_container"]
+        arguments: ["@service_container"]

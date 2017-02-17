@@ -1,3 +1,7 @@
 lottery_homepage:
     path:     /
     defaults: { _controller: LotteryBundle:Default:index }
+
+lottery_meet_create:
+    path:       /meet/create/{meet_id}
+    defaults: { _controller: AppBundle:Design:create }

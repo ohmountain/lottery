@@ -24,23 +24,30 @@ class Prize
     /**
      * @var string
      *
+     * @ORM\Column(name="outer_id", type="string")
+     */
+    private $outer_id;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="title", type="string", length=255, options={"comment":"奖项名称"})
      */
-    private $title;
+    private $title = ' ';
 
     /**
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=255, options={"comment":"奖项图片"})
      */
-    private $image;
+    private $image = 'default.png';
 
     /**
      * @var int
      *
      * @ORM\Column(name="count", type="integer", options={"comment":"奖品数量"})
      */
-    private $count;
+    private $count = 1;
 
     /**
      * @var int
@@ -61,7 +68,7 @@ class Prize
      *
      * @ORM\Column(name="name", type="string", length=255, options={"comment":"奖品名称"})
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var int
@@ -131,6 +138,29 @@ class Prize
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get outer_id
+     *
+     * @return string
+     */
+    public function getOuterId()
+    {
+        return $this->outer_id;
+    }
+
+    /**
+     * Set outer_id
+     *
+     * @param string $outer_id
+     * @return Prize
+     */
+    public function setOuterId($outer_id)
+    {
+        $this->outer_id = $outer_id;
+
+        return $this;
     }
 
     /**

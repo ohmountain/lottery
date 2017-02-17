@@ -22,6 +22,13 @@ class Meet
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="outer_id", type="string")
+     */
+    private $outer_id;
+
+    /**
      * @var array
      * 年会的奖项
      *
@@ -64,15 +71,6 @@ class Meet
 
 
     /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -81,6 +79,39 @@ class Meet
         $this->participants = new \Doctrine\Common\Collections\ArrayCollection();
         $this->results = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get outer_id
+     *
+     * @return string
+     */
+    public function getOuterId()
+    {
+        return $this->outer_id;
+    }
+
+    /**
+     * Set outer_id
+     *
+     * @param $outer_id
+     * @return Meet
+     */
+    public function setOuterId($outer_id)
+    {
+        $this->outer_id = $outer_id;
+
+        return $this;
+    }       
 
     /**
      * Add prize

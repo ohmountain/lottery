@@ -70,3 +70,10 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# 抽奖功能必须:
+# wx_sign_api       获取签到人数接口地址
+# statistics_api    统计数据接口地址
+lottery:
+    wx_sign_api:    https://www.weixin.com
+    statistics_api: https://www.tongji.com
