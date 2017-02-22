@@ -7,3 +7,7 @@ services:
     lottery.design.meet:
         class:  LotteryBundle\Service\Meet
         arguments: ["@service_container"]
+
+    lottery.design.prize:
+        class:  LotteryBundle\Service\Prize
+        arguments: ["@service_container"]

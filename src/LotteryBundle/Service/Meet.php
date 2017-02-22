@@ -20,6 +20,8 @@ class Meet
     }
 
     /**
+     * 创建一个Meet
+     *
      * @param $meet_id
      * @return MeetEntity $meet
      */
@@ -33,6 +35,19 @@ class Meet
         $em->flush();
 
         return $meet;
+    }
+
+    /**
+     * 如果不存在则创建一个Meet
+     *
+     * @param $meet_id
+     * @return MeetEntity $meet
+     */
+    public function getOrCreateMeet($meet_id)
+    {
+        $rep = $this->container->get('doctrine')->getRepository('LotteryBundle:Meet');
+        $result = $rep->findBy(['outer_id' => $meet_id]);
+        return (count($result) === 1) ? $result[0] : $this->createMeet($meet_id);
     }
 
     /**

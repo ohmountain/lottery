@@ -13,7 +13,7 @@ use LotteryBundle\Entity\Prize as PrizeEntity;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Lottery
+class Prize
 {
     private $container;
 
@@ -28,7 +28,7 @@ class Lottery
      * @param MeetEntity $meet
      * @return PrizeEntity $prize
      */
-    public function create(MeetEntity $meet)
+    public function createPrize(MeetEntity $meet)
     {
         $prize = new PrizeEntity;
         $outer_id = md5(uniqid(mt_rand(), true));
@@ -46,7 +46,7 @@ class Lottery
         $prize->setDeleted(false);
         $prize->setOuterId($outer_id);
 
-        $em = $this->container->getDoctrine()->getManager();
+        $em = $this->container->get('doctrine')->getManager();
         $em->persist($prize);
         $em->flush();
 
@@ -56,12 +56,12 @@ class Lottery
     /**
      * 复制一个抽奖
      */
-    public function copy($meet_outer_id, $prize_outer_id)
+    public function copyPrize($meet_outer_id, $prize_outer_id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine')->getManager();
 
-        $meet_repo  = $this->getDoctrine()->getRepository("LotteryBundle:Meet");
-        $prize_repo = $this->getDoctrine()->getRepository("LotteryBundle:Prize");
+        $meet_repo  = $this->container->get('doctrine')->getRepository("LotteryBundle:Meet");
+        $prize_repo = $this->container->get('doctrine')->getRepository("LotteryBundle:Prize");
 
         $meet = $meet_repo->find(['outer_id' => $meet_outer_id]);
 

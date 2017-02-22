@@ -20,12 +20,15 @@ class DesignController extends Controller
     {
 
         $meet_id = $request->get('meet_id');
+    
+        $meet_service   = $this->get('lottery.design.meet');
+        $prize_service  = $this->get('lottery.design.prize');
 
-        $meet_service = $this->get('lottery.design.meet');
+        $meet = $meet_service->getOrCreateMeet($meet_id);
 
-        $meet = $meet_service->createMeet($meet_id);
+        $prize = $prize_service->createPrize($meet);
 
-        dump($meet);
+        dump($prize);
 
         $response = new Response;
 

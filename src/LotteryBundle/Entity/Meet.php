@@ -24,7 +24,7 @@ class Meet
     /**
      * @var string
      *
-     * @ORM\Column(name="outer_id", type="string")
+     * @ORM\Column(name="outer_id", type="string", unique=true)
      */
     private $outer_id;
 
